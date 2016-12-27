@@ -53,7 +53,7 @@ ADD first_run.sh /etc/my_init.d/first_run.sh
 RUN chmod +x /etc/my_init.d/first_run.sh
 
 # Copy the calibre start script to right location
-COPY startapp.sh /startapp.sh
+COPY start.sh /start.sh
 
 # Create directory for library, configs, database
 #RUN mkdir -p $CALIBRE_LIBRARY_DIRECTORY

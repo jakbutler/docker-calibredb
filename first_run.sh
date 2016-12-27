@@ -27,3 +27,5 @@ if [ -z "$CALIBREDB_IMPORT_DIRECTORY" ]; then
   CALIBREDB_IMPORT_DIRECTORY=/opt/calibre/import
 fi
 
+./start.sh
+
