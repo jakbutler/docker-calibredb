@@ -1,4 +1,3 @@
-# Builds a docker alpine image for calibre
 FROM frolvlad/alpine-glibc
 
 MAINTAINER jakbutler
