@@ -79,7 +79,9 @@ EXPOSE 3389 8080
 
 # Run cron job and start calibre server
 #CMD cron && /usr/bin/calibre-server --with-library=/opt/calibre/library
-CMD /bin/sh -c cron && /sbin/my_init
+
+# Use baseimage-docker's init system
+CMD ["cron && /sbin/my_init"]
 
 
 
