@@ -1,1 +1,1 @@
-*/1 * * * * root /opt/calibre/calibredb add $CALIBREDB_IMPORT_DIRECTORY --library-path $CALIBRE_LIBRARY_DIRECTORY --recurse >> /var/log/cron.log 2>&1
+*/10 * * * * /opt/calibre/calibredb add $CALIBREDB_IMPORT_DIRECTORY -r --with-library $CALIBRE_LIBRARY_DIRECTORY && rm $CALIBREDB_IMPORT_DIRECTORY/* >> /var/log/cron.log 2>&1
