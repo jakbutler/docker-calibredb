@@ -70,13 +70,13 @@ RUN apk update && \
 #ADD run.sh /etc/runit_init.d/run.sh
 ADD run.sh ~/run.sh
 #RUN chmod a+x /etc/runit_init.d/run.sh
-RUN chmod a+x ~/run.sh
+RUN chmod +x ~/run.sh
 
 # Add crontab job to import books in the library
 #ADD crontab /etc/cron.d/calibre-library-update
 ADD update_library.sh ~/update_library.sh
 #RUN chmod a+x /etc/cron.d/calibre-library-update
-RUN chmod a+x ~/update_library.sh
+RUN chmod +x ~/update_library.sh
 RUN touch /var/log/calibredb.log
 
 #########################################
