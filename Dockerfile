@@ -13,7 +13,7 @@ ENV CALIBRE_CONFIG_DIRECTORY = /opt/calibre/config
 ENV CALIBREDB_IMPORT_DIRECTORY = /opt/calibre/import
 
 # Flag for automatically updating to the latest version on startup
-ENV AUTO_UPDATE = 0
+# ENV AUTO_UPDATE = 0
 
 # Install packages needed for app
 RUN apk update && \
@@ -40,9 +40,9 @@ RUN chmod +x /etc/runit_init.d/first_run.sh
 
 # Add crontab job to import books in the library
 ADD crontab /etc/cron.d/calibre-library-update
-ADD update_library.sh /etc/periodic/15minutes/update_library.sh
+ADD update_library.sh /etc/periodic/15min/update_library.sh
 RUN chmod 0644 /etc/cron.d/calibre-library-update
-RUN chmod 0644 /etc/periodic/15minutes/update_library.sh
+RUN chmod 0644 /etc/periodic/15min/update_library.sh
 RUN touch /var/log/cron.log
 
 #########################################
@@ -53,7 +53,7 @@ VOLUME /opt/calibre/import
 VOLUME /opt/calibre/library
 
 # Run container startup script, cron job, and then watch the log file
-CMD "/sbin/start_runit; crond -l 4 && tail -f /var/log/cron.log"
+CMD crond -l 4 && tail -f /var/log/cron.log
 
 
 
