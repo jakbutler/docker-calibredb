@@ -36,13 +36,13 @@ RUN apk update && \
 
 # Add the first_run.sh script to run on container startup
 ADD first_run.sh /etc/runit_init.d/first_run.sh
-RUN chmod +x /etc/runit_init.d/first_run.sh
+RUN chmod a+x /etc/runit_init.d/first_run.sh
 
 # Add crontab job to import books in the library
 ADD crontab /etc/cron.d/calibre-library-update
 ADD update_library.sh /etc/periodic/15min/update_library.sh
-RUN chmod 0644 /etc/cron.d/calibre-library-update
-RUN chmod 0644 /etc/periodic/15min/update_library.sh
+RUN chmod a+x /etc/cron.d/calibre-library-update
+RUN chmod a+x /etc/periodic/15min/update_library.sh
 RUN touch /var/log/cron.log
 
 #########################################
