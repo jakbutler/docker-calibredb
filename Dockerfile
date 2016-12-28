@@ -40,7 +40,9 @@ RUN chmod +x /etc/runit_init.d/first_run.sh
 
 # Add crontab job to import books in the library
 ADD crontab /etc/cron.d/calibre-library-update
+ADD update_library.sh /etc/periodic/15minutes/update_library.sh
 RUN chmod 0644 /etc/cron.d/calibre-library-update
+RUN chmod 0644 /etc/periodic/15minutes/update_library.sh
 RUN touch /var/log/cron.log
 
 #########################################
@@ -51,7 +53,7 @@ VOLUME /opt/calibre/import
 VOLUME /opt/calibre/library
 
 # Run container startup script, cron job, and then watch the log file
-CMD /bin/sh -c "/sbin/start_runit && /usr/sbin/crond -l 4 && tail -f /var/log/cron.log"
+CMD "/sbin/start_runit; crond -l 4 && tail -f /var/log/cron.log"
 
 
 
