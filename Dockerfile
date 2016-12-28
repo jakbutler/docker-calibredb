@@ -6,11 +6,11 @@ MAINTAINER jakbutler
 ##        ENVIRONMENTAL CONFIG         ##
 #########################################
 # Calibre environment variables
-ENV CALIBRE_LIBRARY_DIRECTORY = /etc/calibre/library
-ENV CALIBRE_CONFIG_DIRECTORY = /etc/calibre/config
+ENV CALIBRE_LIBRARY_DIRECTORY = /opt/calibre/library
+ENV CALIBRE_CONFIG_DIRECTORY = /opt/calibre/config
 
 # Auto-import directory
-ENV CALIBREDB_IMPORT_DIRECTORY = /etc/calibre/import
+ENV CALIBREDB_IMPORT_DIRECTORY = /opt/calibre/import
 
 # Flag for automatically updating to the latest version on startup
 # ENV AUTO_UPDATE = 0
@@ -22,13 +22,11 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
     ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
-    wget \
-        "https://raw.githubusercontent.com/andyshinn/alpine-pkg-glibc/master/sgerrand.rsa.pub" \
+    wget "https://raw.githubusercontent.com/andyshinn/alpine-pkg-glibc/master/sgerrand.rsa.pub" \
         -O "/etc/apk/keys/sgerrand.rsa.pub" && \
-    wget \
-        "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
-        "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
-        "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" && \
+    wget "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
+         "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
+         "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" && \
     apk add --no-cache \
         "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
         "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
@@ -42,16 +40,17 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
     \
     rm "/root/.wget-hsts" && \
     apk del .build-dependencies && \
-    rm \
-        "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
-        "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
-        "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
+    rm "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
+       "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
+       "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
+
 ENV LANG=C.UTF-8
 
 # Install packages needed for app
 RUN apk update && \
     apk add --no-cache --upgrade \
     bash \
+    ca-certificates \
     python \
     wget \
     gcc \
@@ -63,7 +62,7 @@ RUN apk update && \
 #########################################
 ##          GUI APP INSTALL            ##
 #########################################
-    wget -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/etc', isolated=True)" && \
+    wget -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/opt', isolated=True)" && \
     rm -rf /tmp/calibre-installer-cache
 
 # Add the first_run.sh script to run on container startup
@@ -80,9 +79,9 @@ RUN touch /var/log/cron.log
 #########################################
 ##         EXPORTS AND VOLUMES         ##
 #########################################
-VOLUME /etc/calibre/config
-VOLUME /etc/calibre/import
-VOLUME /etc/calibre/library
+VOLUME /opt/calibre/config
+VOLUME /opt/calibre/import
+VOLUME /opt/calibre/library
 
 # Run container startup script, cron job, and then watch the log file
 CMD crond -l 4 && tail -f /var/log/cron.log
