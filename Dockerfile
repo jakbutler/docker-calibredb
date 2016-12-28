@@ -58,7 +58,7 @@ RUN apk update && \
     imagemagick \
     qt5-qtbase-x11 \
     xdg-utils \
-    xz && \
+    xz \
     inotify-tools && \
 #########################################
 ##          GUI APP INSTALL            ##
