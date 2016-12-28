@@ -6,11 +6,11 @@ MAINTAINER jakbutler
 ##        ENVIRONMENTAL CONFIG         ##
 #########################################
 # Calibre environment variables
-ENV CALIBRE_LIBRARY_DIRECTORY = /opt/calibre/library
-ENV CALIBRE_CONFIG_DIRECTORY = /opt/calibre/config
+ENV CALIBRE_LIBRARY_DIRECTORY = /etc/calibre/library
+ENV CALIBRE_CONFIG_DIRECTORY = /etc/calibre/config
 
 # Auto-import directory
-ENV CALIBREDB_IMPORT_DIRECTORY = /opt/calibre/import
+ENV CALIBREDB_IMPORT_DIRECTORY = /etc/calibre/import
 
 # Flag for automatically updating to the latest version on startup
 # ENV AUTO_UPDATE = 0
@@ -20,18 +20,18 @@ RUN apk update && \
     apk add --no-cache --upgrade \
     bash \
     ca-certificates \
+    python \
+    wget \
     gcc \
     mesa-gl \
-    python \
-    qt5-qtbase-x11 \
     imagemagick \
-    wget \
+    qt5-qtbase-x11 \
     xdg-utils \
     xz && \
 #########################################
 ##          GUI APP INSTALL            ##
 #########################################
-    wget -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/opt', isolated=True)" && \
+    wget -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/etc', isolated=True)" && \
     rm -rf /tmp/calibre-installer-cache
 
 # Add the first_run.sh script to run on container startup
@@ -48,9 +48,9 @@ RUN touch /var/log/cron.log
 #########################################
 ##         EXPORTS AND VOLUMES         ##
 #########################################
-VOLUME /opt/calibre/config
-VOLUME /opt/calibre/import
-VOLUME /opt/calibre/library
+VOLUME /etc/calibre/config
+VOLUME /etc/calibre/import
+VOLUME /etc/calibre/library
 
 # Run container startup script, cron job, and then watch the log file
 CMD crond -l 4 && tail -f /var/log/cron.log
