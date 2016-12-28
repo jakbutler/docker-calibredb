@@ -58,7 +58,8 @@ VOLUME ["/opt/calibre/import"]
 VOLUME ["/opt/calibre/library"]
 
 # Run cron job
-CMD ["/sbin/start_runit && /usr/sbin/crond -f -l 8"]
+#CMD [sh -c "/sbin/start_runit && /usr/sbin/crond -f -l 8"]
+CMD ["/sbin/start_runit && /usr/sbin/crond && tail -f /var/log/cron.log"]
 
 
 
