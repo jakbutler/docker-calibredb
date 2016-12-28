@@ -17,3 +17,10 @@ fi
 if [ -z "$CALIBREDB_IMPORT_DIRECTORY" ]; then
   CALIBREDB_IMPORT_DIRECTORY=/opt/calibre/import
 fi
+
+while true
+do
+  inotifywait -r -e modify,moved_to,create $CALIBREDB_IMPORT_DIRECTORY
+  sleep 2
+  ./update_library.sh
+done

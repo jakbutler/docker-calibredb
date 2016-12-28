@@ -6,14 +6,14 @@ MAINTAINER jakbutler
 ##        ENVIRONMENTAL CONFIG         ##
 #########################################
 # Calibre environment variables
-ENV CALIBRE_LIBRARY_DIRECTORY = /opt/calibre/library
-ENV CALIBRE_CONFIG_DIRECTORY = /opt/calibre/config
+ENV CALIBRE_LIBRARY_DIRECTORY=/opt/calibre/library
+ENV CALIBRE_CONFIG_DIRECTORY=/opt/calibre/config
 
 # Auto-import directory
-ENV CALIBREDB_IMPORT_DIRECTORY = /opt/calibre/import
+ENV CALIBREDB_IMPORT_DIRECTORY=/opt/calibre/import
 
 # Flag for automatically updating to the latest version on startup
-# ENV AUTO_UPDATE = 0
+# ENV AUTO_UPDATE=0
 
 # Here we install GNU libc (aka glibc) and set C.UTF-8 locale as default.
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
@@ -59,6 +59,7 @@ RUN apk update && \
     qt5-qtbase-x11 \
     xdg-utils \
     xz && \
+    inotify-tools && \
 #########################################
 ##          GUI APP INSTALL            ##
 #########################################
@@ -66,15 +67,17 @@ RUN apk update && \
     rm -rf /tmp/calibre-installer-cache
 
 # Add the first_run.sh script to run on container startup
-ADD first_run.sh /etc/runit_init.d/first_run.sh
-RUN chmod a+x /etc/runit_init.d/first_run.sh
+#ADD run.sh /etc/runit_init.d/run.sh
+ADD run.sh ~/run.sh
+#RUN chmod a+x /etc/runit_init.d/run.sh
+RUN chmod a+x /run.sh
 
 # Add crontab job to import books in the library
-ADD crontab /etc/cron.d/calibre-library-update
-ADD update_library.sh /etc/periodic/15min/update_library.sh
-RUN chmod a+x /etc/cron.d/calibre-library-update
-RUN chmod a+x /etc/periodic/15min/update_library.sh
-RUN touch /var/log/cron.log
+#ADD crontab /etc/cron.d/calibre-library-update
+ADD update_library.sh ~/update_library.sh
+#RUN chmod a+x /etc/cron.d/calibre-library-update
+RUN chmod a+x ~/update_library.sh
+RUN touch /var/log/calibredb.log
 
 #########################################
 ##         EXPORTS AND VOLUMES         ##
@@ -84,7 +87,7 @@ VOLUME /opt/calibre/import
 VOLUME /opt/calibre/library
 
 # Run container startup script, cron job, and then watch the log file
-CMD crond -l 4 && tail -f /var/log/cron.log
+CMD ~/run.sh && tail -f /var/log/calibredb.log
 
 
 
