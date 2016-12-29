@@ -6,11 +6,11 @@ MAINTAINER jakbutler
 ##        ENVIRONMENTAL CONFIG         ##
 #########################################
 # Calibre environment variables
-ENV CALIBRE_LIBRARY_DIRECTORY=/opt/calibre/library
-ENV CALIBRE_CONFIG_DIRECTORY=/opt/calibre/config
+ENV CALIBRE_LIBRARY_DIRECTORY=/opt/calibredb/library
+ENV CALIBRE_CONFIG_DIRECTORY=/opt/calibredb/config
 
 # Auto-import directory
-ENV CALIBREDB_IMPORT_DIRECTORY=/opt/calibre/import
+ENV CALIBREDB_IMPORT_DIRECTORY=/opt/calibredb/import
 
 # Flag for automatically updating to the latest version on startup
 # ENV AUTO_UPDATE=0
@@ -82,9 +82,9 @@ RUN touch /var/log/calibredb.log
 #########################################
 ##         EXPORTS AND VOLUMES         ##
 #########################################
-VOLUME /opt/calibre/config
-VOLUME /opt/calibre/import
-VOLUME /opt/calibre/library
+VOLUME /opt/calibredb/config
+VOLUME /opt/calibredb/import
+VOLUME /opt/calibredb/library
 
 # Run container startup script, cron job, and then watch the log file
 CMD /run.sh && tail -f /var/log/calibredb.log

@@ -9,18 +9,17 @@ else
 fi
 
 if [ -z "$CALIBRE_LIBRARY_DIRECTORY" ]; then
-  CALIBRE_LIBRARY_DIRECTORY=/opt/calibre/library
+  CALIBRE_LIBRARY_DIRECTORY=/opt/calibredb/library
 fi
 if [ -z "$CALIBRE_CONFIG_DIRECTORY" ]; then
-  CALIBRE_CONFIG_DIRECTORY=/opt/calibre/config
+  CALIBRE_CONFIG_DIRECTORY=/opt/calibredb/config
 fi
 if [ -z "$CALIBREDB_IMPORT_DIRECTORY" ]; then
-  CALIBREDB_IMPORT_DIRECTORY=/opt/calibre/import
+  CALIBREDB_IMPORT_DIRECTORY=/opt/calibredb/import
 fi
 
 while true
 do
   inotifywait -r -e modify,moved_to,create $CALIBREDB_IMPORT_DIRECTORY
-  sleep 2
   ./update_library.sh
 done
