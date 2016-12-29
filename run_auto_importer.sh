@@ -7,7 +7,7 @@ if [ ! "$AUTO_UPDATE" = "1" ]; then
 else
   echo "AUTO_UPDATE requested, checking for latest version..."
   latest_version=`wget -q -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/Changelog.yaml | grep -m 1 "^- version:" | awk '{print $3}'`
-  if [ $my_version -ne $latest_version ]
+  if [ $my_version != $latest_version ]
   then
     echo "Updating from $my_version to $latest_version."
     wget -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/opt', isolated=True)"
