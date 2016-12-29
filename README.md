@@ -41,12 +41,12 @@ The below tables list the supported parameters for the container, not all of whi
 | `/opt/calibredb/import`  | (Required) The local directory where the new files to import will be saved, specified in the `CALIBREDB_IMPORT_DIRECTORY` environment variable.|
 | `/opt/calibredb/library`  | (Required) The local directory where the library metadata and files are stored, specified in the `CALIBRE_LIBERARY_DIRECTORY` environment variable.  |
 
-## Info
+## Other Details
 On startup, the container should execute the command `/usr/bin/run_auto_importer.sh` in order to perform the auto-importing and stay running. 
 
 For shell access whilst the container is running: `docker exec -it calibredb /bin/bash`
 
-## Install On unRaid:
+## Install on unRaid
 On unRaid, install from the **Community Repositories** and enter the required folder locations.
 
 ## Install on QNAP
