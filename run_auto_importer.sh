@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Perform a software update, if requested
-my_version=`/opt/calibre/calibre --version | awk -F'[{} ]' '{print $4}'`
+my_version=`/opt/calibre/calibre --version | awk -F'[() ]' '{print $4}'`
 if [ ! "$AUTO_UPDATE" = "1" ]; then
   echo "AUTO_UPDATE not requested, keeping installed version of $my_version."
 else
@@ -28,6 +28,7 @@ if [ -z "$CALIBREDB_IMPORT_DIRECTORY" ]; then
   CALIBREDB_IMPORT_DIRECTORY=/opt/calibredb/import
 fi
 
+echo "Starting auto-importer process."
 # Continuously watch for the 'close_write' and 'moved_to' events to occur for contents of the defined import directory.
 inotifywait -m -q -e close_write,moved_to --format '%w%f' $CALIBREDB_IMPORT_DIRECTORY | while IFS= read -r file; do
 # Use the calibredb commandline api to import the new file or directory, which also copies it to the library,
