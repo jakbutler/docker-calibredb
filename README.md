@@ -2,7 +2,7 @@
 A lightweight docker container, based on [Alpine Linux](https://alpinelinux.org/), for running the [calibredb](https://manual.calibre-ebook.com/generated/en/calibredb.html) backend component to auto-import new books into a library. Intended to work in tandem with other containers running other parts of [calibre](https://calibre-ebook.com/) or serving up its library.
 
 # What is this? 
-Many of the existing calibre containers are designed around running the calibre-server or similar ([COPS](https://github.com/seblucas/cops), [calibre2odps](https://calibre2opds.com/), [CalibreWeb](https://github.com/janeczku/calibre-web), etc.) and they do it well; but few provided a reliable method for automatically importing new eBooks from a downloader such as [LazyLibrarian](https://github.com/lazylibrarian/LazyLibrarian). This container is intended to fill that gap. 
+Many of the existing calibre containers are designed around running the calibre-server or similar ([COPS](https://github.com/seblucas/cops), [calibre2odps](https://calibre2opds.com/), [CalibreWeb](https://github.com/janeczku/calibre-web), etc.) and they do it well; but few provided a reliable method for automatically importing new eBooks from a downloader such as [LazyLibrarian](https://github.com/DobyTang/LazyLibrarian). This container is intended to fill that gap. 
 
 ## Usage
 ```
