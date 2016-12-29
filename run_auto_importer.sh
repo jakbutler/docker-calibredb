@@ -29,10 +29,17 @@ if [ -z "$CALIBREDB_IMPORT_DIRECTORY" ]; then
 fi
 
 echo "Starting auto-importer process."
-# Continuously watch for the 'close_write' and 'moved_to' events to occur for contents of the defined import directory.
-inotifywait -m -q -e close_write,moved_to --format '%w%f' $CALIBREDB_IMPORT_DIRECTORY | while IFS= read -r file; do
+# Continuously watch for new content in the defined import directory.
+while true
+do
+    count=`find $CALIBREDB_IMPORT_DIRECTORY -mindepth 1 -maxdepth 1 | wc -l`
+    if [ $count -gt 0 ]; then
+      echo "Attempting import of $count new files/directories."
 # Use the calibredb commandline api to import the new file or directory, which also copies it to the library,
 # then remove it from the import directory.
 # For more detail, see https://manual.calibre-ebook.com/generated/en/calibredb.html
-  /opt/calibre/calibredb add "$file" -r --with-library $CALIBRE_LIBRARY_DIRECTORY && rm -rf "$file"
+      /opt/calibre/calibredb add $CALIBREDB_IMPORT_DIRECTORY -r --with-library $CALIBRE_LIBRARY_DIRECTORY && rm -rf $CALIBREDB_IMPORT_DIRECTORY/*
+    fi
+#TODO: Make this a configurable variable
+    sleep 1m
 done
