@@ -22,6 +22,7 @@ ENV AUTO_UPDATE=0
 RUN apk update && \
     apk add --no-cache --upgrade \
     bash \
+    ca-certificates \
     python \
     wget \
     gcc \
