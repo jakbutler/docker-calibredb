@@ -54,4 +54,4 @@ VOLUME /opt/calibredb/library
 #########################################
 ##           Startup Command           ##
 #########################################
-CMD /run.sh
+CMD /usr/bin/run_auto_importer.sh
